@@ -11,11 +11,14 @@ def foreign_neighbors(node, G):
     """
     foreign = []
     t = G.nodes[node]['layer']
-    s = set(nx.all_neighbors(G, node))
+    s = set(G.neighbors(node))
     while s:
         x = s.pop()
         if G.nodes[x]['layer'] != t:
             foreign.append(x)
+
+    if len(foreign) == 0:
+        foreign = [None]
 
     return set(foreign)
 
@@ -79,22 +82,26 @@ def cascade_rec(G, g1, g2, counter, verbose):
         a, b = edges.pop()
         n1 = foreign_neighbors(a, G)
         n2 = foreign_neighbors(b, G)
+        if n1 == {None} or n2 == {None}:
+            continue
+
         for comp in components:
-            if (n1.issubset(comp) and (not n2.issubset(comp))) or ((not n1.issubset(comp)) and n2.issubset(comp)):
+            if (n1.issubset(comp) and not n2.issubset(comp)) or (not n1.issubset(comp) and n2.issubset(comp)):
                 G.remove_edge(a, b)
                 g2.remove_edge(a, b)
 
                 removed = 1
                 if verbose:
                     print('删除', (a, b))
+                break
 
     # 删除边后，检查其他边
     if removed == 1:
-        cascade_fail(G, g2, g1, 1, verbose)
+        cascade_rec(G, g2, g1, 1, verbose)
 
     # 计数器递减，递归出口
     if removed == 0 and counter > 0:
-        cascade_fail(G, g2, g1, counter - 1, verbose)
+        cascade_rec(G, g2, g1, counter - 1, verbose)
     return G, g1, g2
 
 
@@ -159,12 +166,7 @@ def attack_network(G, g1=nx.Graph(), g2=nx.Graph(), p=0.5, verbose=True):
 
     # 随机选择节点从网络g1移除
     candidates = set()
-    nodes = g1.nodes()
-    single = (len(nodes) == 0)
-    if single:
-        nodes = G.nodes()
-
-    for node in nodes:
+    for node in g1.nodes():
         if np.random.random() < 1 - p:
             candidates.add(node)
 
@@ -178,6 +180,5 @@ def attack_network(G, g1=nx.Graph(), g2=nx.Graph(), p=0.5, verbose=True):
         candidates.intersection_update(nodes_updated)
 
     # 递归检测集群并移除相邻网络的连边
-    if not single:
-        G, g1, g2 = cascade_rec_optional(G, g1, g2, 1, verbose)
-    return G
+    G2, g1, g2 = cascade_rec(G, g1, g2, 1, verbose)
+    return G2

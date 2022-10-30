@@ -64,7 +64,7 @@ def giant_layercount(G, giant_comp):
     return layer1, layer2
 
 
-def generate_pinf_ER(n, k, t=2, hasGraph=False, files=[]):
+def generate_pinf_ER(n, k, t=2, hasGraph=False, files=[], s=0, e=1):
     """
     生成ER网络模型的数据
     :param n: 网络节点个数
@@ -84,20 +84,20 @@ def generate_pinf_ER(n, k, t=2, hasGraph=False, files=[]):
 
     else:
         start = datetime.now()
-        g1 = gen_rand.networkER_w_3Dpos(n, k, 1)
-        g2 = gen_rand.networkER_w_3Dpos(n, k, 2)
-        G_int = gen_rand.intd_random_net(g1, g2)
+        G_int, g1, g2 = gen_rand.new_network(n, k)
         time = datetime.now() - start
         print("级联网络已生成", time)
 
     p_infs = []
-    ps = np.linspace(0, 1, 10)
+    ps = np.linspace(s, e, 20)
     for p in tqdm(ps):
-        print("当前p:\n", p)
+        print("\n")
+        print("当前p:", p)
+        print("\n")
         start = datetime.now()
         mean_p_inf = 0
         for i in range(t):
-            print("本轮次数:", i+1, "/", t)
+            print("本轮次数:", i + 1, "/", t)
             G_att = att.attack_network(G_int, g1, g2, p, False)
             p_inf = compute_pinf(G_att, G_int)
             mean_p_inf += p_inf[0]
@@ -130,7 +130,7 @@ def plot_pinf(results, k=1, xlim=None, labels=None, path=None, p_theory=False, r
     for i, res in enumerate(results):
         pks = res[0] * k
         p_infs = res[1]
-        plt.plot(pks, p_infs, c=next(color), linewidth=2,  mfc="None")
+        plt.plot(pks, p_infs, c=next(color), linewidth=2, mfc="None")
 
     if p_theory:
         plt.vlines(2.4554, ymin=0, ymax=1, colors='k', linestyles='dashdot', label='$p_{c}$=2.4554/<k>')
@@ -143,8 +143,10 @@ def plot_pinf(results, k=1, xlim=None, labels=None, path=None, p_theory=False, r
     # plt.xlim(0,0.9)
     plt.ylim(0, 1)
     # plt.ylabel('$P_{node}$(in Gcomponent)')
+
     if labels:
         plt.legend(labels)
     plt.savefig(path, dpi=300, bbox_inches='tight')
+
     plt.grid()
     plt.show()

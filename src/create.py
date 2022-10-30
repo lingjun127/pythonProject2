@@ -42,36 +42,36 @@ def new_network(n, k):
         while n2:
             b = n2.pop()
             break
-        G.add_edge(a, b, Value=3)
+        G.add_edge(a, b, layer=3)
     return G, g1, g2
 
 
-def nodeSetting(G, layer=1):
-    """
-    生成(x,y,z)坐标，节点ID和属性设置级联方法(x,y)坐标遵循networkx spring布局
-    将(x,y,z)坐标保存为名为'3D_pos'节点的属性。该信息用于绘制相互依赖的图
-    :param G:
-    :param layer:
-    :return:
-    """
-    pos = nx.spring_layout(G)
-    for node in pos:
-        pos[node] = np.append(pos[node], layer)
-    nx.set_node_attributes(G, pos, name='3D_pos')
-
-    # 添加节点属性 'layer'
-    for node in G.nodes():
-        G.nodes[node]['layer'] = layer
-
-    for e in G.edges():
-        G.edges[e]['lager'] = layer
-
-    # 节点重命名
-    mapping = {}
-    for node in G.nodes():
-        mapping[node] = str(layer) + '-' + str(node)
-
-    return nx.relabel_nodes(G, mapping)
+# def nodeSetting(G, layer=1):
+#     """
+#     生成(x,y,z)坐标，节点ID和属性设置级联方法(x,y)坐标遵循networkx spring布局
+#     将(x,y,z)坐标保存为名为'3D_pos'节点的属性。该信息用于绘制相互依赖的图
+#     :param G:
+#     :param layer:
+#     :return:
+#     """
+#     pos = nx.spring_layout(G)
+#     for node in pos:
+#         pos[node] = np.append(pos[node], layer)
+#     nx.set_node_attributes(G, pos, name='3D_pos')
+#
+#     # 添加节点属性 'layer'
+#     for node in G.nodes():
+#         G.nodes[node]['layer'] = layer
+#
+#     for e in G.edges():
+#         G.edges[e]['lager'] = layer
+#
+#     # 节点重命名
+#     mapping = {}
+#     for node in G.nodes():
+#         mapping[node] = str(layer) + '-' + str(node)
+#
+#     return nx.relabel_nodes(G, mapping)
 
 
 def SF_powerlaw_exp(G):

@@ -9,16 +9,16 @@ ER4000 = np.loadtxt('../notebooks/results/ER/t20/ERn4000k4_20.csv', delimiter=",
 
 # 平滑曲线
 re = []
-# for data in [ER500, ER1000, ER2000, ER4000]:
-#     x = data[0]
-#     y = data[1]
-#     model = make_interp_spline(x, y)
-#     xs = np.linspace(0, 1, 100)
-#     ys = model(xs)
-#     re.append([xs, ys])
+for data in [ER500, ER1000, ER2000, ER4000]:
+    x = data[0]
+    y = data[1]
+    model = make_interp_spline(x, y)
+    xs = np.linspace(0, 1, 100)
+    ys = model(xs)
+    re.append([xs, ys])
 
 
-plot_pinf([ER500, ER1000, ER2000, ER4000], k=4,
+plot_pinf(re, k=4,
           labels=["ER model, N=500,  <k>=4", "ER model, N=1000, <k>=4", "ER model, N=2000, <k>=4",
                   "ER model, N=4000, <k>=4",
                   ],
