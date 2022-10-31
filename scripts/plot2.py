@@ -27,15 +27,16 @@ plt.figure(figsize=(10, 7))
 plt.rcParams.update({'font.size': 14})
 
 for i, res in enumerate(results):
-    pks = res[0] * k
+    pks = res[0] *k
     p_infs = res[1]
     plt.plot(pks, p_infs)
 
-plt.vlines(2.4554, ymin=0, ymax=1, colors='k', linestyles='dashdot', label='$p_{c}$=2.4554/<k>')
+# plt.vlines(2.4554, ymin=0, ymax=1, colors='k', linestyles='dashdot', label='$p_{c}$=2.4554/<k>')
 plt.xlabel('pa')
 plt.ylabel('$P_{inf}$')
+
 # plt.ylim(0, 1)
-# plt.xlim(2.5, 3)
+plt.xlim(2.36, 2.5)
 plt.savefig(path, dpi=600, bbox_inches='tight')
 # 生成网格线
 plt.grid()
