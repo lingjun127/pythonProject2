@@ -6,7 +6,7 @@ SFn300_30_k4 = np.loadtxt('../notebooks/results/SF/t20/SFn300_30_k4.csv', delimi
 SFn300_27_k4 = np.loadtxt('../notebooks/results/SF/t20/SFn300_27_k4.csv', delimiter=",")
 SFn300_23_k4 = np.loadtxt('../notebooks/results/SF/t20/SFn300_23_k4.csv', delimiter=",")
 ERn300k4_20 = np.loadtxt('../notebooks/results/ER/t20/ERn300k4_20.csv', delimiter=",")
-path = '../notebooks/figure/figure7.png'
+path = '../notebooks/figure/FIG7.png'
 results = [SFn300_30_k4, SFn300_27_k4, SFn300_23_k4, ERn300k4_20]
 plt.figure(figsize=(10, 7))
 plt.rcParams.update({'font.size': 14})

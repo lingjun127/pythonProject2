@@ -22,7 +22,7 @@ plot_pinf(re, k=4,
           labels=["ER model, N=500,  <k>=4", "ER model, N=1000, <k>=4", "ER model, N=2000, <k>=4",
                   "ER model, N=4000, <k>=4",
                   ],
-          path="../notebooks/figure/ER_t20.png", p_theory=True)
+          path="../notebooks/figure/FIG5.png", p_theory=True)
 
 
 
