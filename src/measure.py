@@ -25,12 +25,12 @@ def plot_pinf(results, k=1, xlim=None, labels=None, path=None, p_theory=False, r
     plt.rcParams.update({'font.size': 14})
     color = iter(plt.cm.rainbow(np.linspace(0.0, 1, len(results))))
     # 点的图形
-    # marker = ['o', 's', 'D', 'v',]
+    marker = ['o', 's', 'D', 'v',]
 
     for i, res in enumerate(results):
         pks = res[0] * k
         p_infs = res[1]
-        plt.plot(pks, p_infs, c=next(color), linewidth=2, mfc="None")
+        plt.plot(pks, p_infs, c=next(color), linewidth=2, mfc="None",marker=marker[i])
 
     if p_theory:
         plt.vlines(2.4554, ymin=0, ymax=1, colors='k', linestyles='dashdot', label='$p_{c}$=2.4554/<k>')
