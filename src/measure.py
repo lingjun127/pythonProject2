@@ -25,12 +25,12 @@ def plot_pinf(results, k=1, xlim=None, labels=None, path=None, p_theory=False, r
     plt.rcParams.update({'font.size': 14})
     color = iter(plt.cm.rainbow(np.linspace(0.0, 1, len(results))))
     # 点的图形
-    marker = ['o', 's', 'D', 'v',]
+    marker = ['o', 's', 'D', 'v', ]
 
     for i, res in enumerate(results):
         pks = res[0] * k
         p_infs = res[1]
-        plt.plot(pks, p_infs, c=next(color), linewidth=2, mfc="None",marker=marker[i])
+        plt.plot(pks, p_infs, c=next(color), linewidth=2, mfc="None", marker=marker[i])
 
     if p_theory:
         plt.vlines(2.4554, ymin=0, ymax=1, colors='k', linestyles='dashdot', label='$p_{c}$=2.4554/<k>')
@@ -108,7 +108,7 @@ def giant_layercount(G, giant_comp):
     return layer1, layer2
 
 
-def generate_pinf_ER(n, k, t=2, hasGraph=False, files=[], s=0, e=1,d=20):
+def generate_pinf_ER(n, k, t=2, hasGraph=False, files=[], s=0, e=1, d=20):
     """
     生成ER网络模型的数据
     :param n: 网络节点个数
@@ -138,7 +138,7 @@ def generate_pinf_ER(n, k, t=2, hasGraph=False, files=[], s=0, e=1,d=20):
         start = datetime.now()
         mean_p_inf = 0
         for i in range(t):
-            G_att = att.attack_network(G_int, g1, g2, p, False)
+            G_att, g11, g22 = att.attack_network(G_int, g1, g2, p, False)
             p_inf = compute_pinf(G_att, G_int)
             mean_p_inf += p_inf[0]
 
@@ -151,7 +151,7 @@ def generate_pinf_ER(n, k, t=2, hasGraph=False, files=[], s=0, e=1,d=20):
 
 # %%
 
-def generate_pinf_SF(n=50, gamma=3, t=5, hasGraph=False, files=[], s=0, e=1,d=20):
+def generate_pinf_SF(n=50, gamma=3, t=5, hasGraph=False, files=[], s=0, e=1, d=20):
     """
     generate p_inf of Scale-free model along with the 1-p from [0,1]
 
